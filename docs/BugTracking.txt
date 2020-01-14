@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2020-01-11T23:08:43-06:00
+
+====== BugTracking ======
+Creado sábado 11 enero 2020
+

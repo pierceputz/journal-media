@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2020-01-12T19:30:44-06:00
+
+====== ScratchPad ======
+Creado domingo 12 enero 2020—
+//A big picture analysis.//
+
+===== Objects =====
+A journal is composed of various journal entries. Media exists seperately from the journal but can be linked to entries based on their date.
+
+==== Journal ====
+Attributes:
+* Journal entries
+* Media
+* Root path of journal
+
+==== Journal Entries ====
+Attributes:
+* Date
+* Contents:
+	* Log
+	* Comments
+* Media folder
+
+Methods:
+* Add media references/hyperlinks to self before or after contents
+* Link or copy journal media to dir
+
+==== Media ====
+Attributes:
+* Date
+* File path
+* Type

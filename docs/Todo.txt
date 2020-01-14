@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2020-01-11T23:08:37-06:00
+
+====== Todo ======
+Creado sábado 11 enero 2020
+
+[ ] Write tests
+[ ] Define objects
+[*] Define functionality
+[*] Determine scope of project

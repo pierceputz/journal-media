@@ -76,6 +76,7 @@ class TestJournalMediaClass(unittest.TestCase):
         journal = Journal(JOURNALDIR)
         for log in journal.logs:
             self.assertEqual(METADATA, log.metadata)
+            self.assertTrue(log.path.exists())
         
         #ensure each journal entry has: date, header, contents 
         #TEST STILL IN PROGRESS
@@ -85,7 +86,7 @@ class TestJournalMediaClass(unittest.TestCase):
     def test_media_referencing(self):
         '''Link media to journal entries by date'''
         
-        journal = Journal(JOURNAL_DIR)
+        journal = Journal(JOURNALDIR)
         
         #journal.attachMedia(MEDIA_DIR)
         

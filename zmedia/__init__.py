@@ -19,6 +19,7 @@ class Log():
     def __init__(self, path):
         '''import a full journal from the top-level recursively'''
         
+        self.path = Path(path)
         self.metadata, self.contents = str(), str()
         self.entries = []
         with open(path, 'r') as f:

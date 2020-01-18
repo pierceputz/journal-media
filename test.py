@@ -67,7 +67,6 @@ class TestJournalMediaClass(unittest.TestCase):
     def test_journal_class(self):
         #Test that we can retrieve journal entries
         #-Access headings & contents
-        input('wait')
         pass
     
 if __name__ == "__main__":

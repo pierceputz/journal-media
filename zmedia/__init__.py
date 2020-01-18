@@ -50,6 +50,7 @@ class Log():
                 #Rewrite entirely. I think it get confused and turns off 
                 #the parser because the first heading is the log heading
                 #not an entry heading
+                #Should probably use regex
                 if is_heading(line) and startparsing != True:
                     logging.debug('Entry parsing started for %s', line)
                     self.header = 

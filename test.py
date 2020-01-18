@@ -71,7 +71,7 @@ class TestJournalMediaClass(unittest.TestCase):
 
     def test_journal_integrity(self):
         '''Test that we can create journals and retrieve their contents
-        -Verify headings & contents
+        -Verify attributes
         -Add a heading for media links
         Search a directory for media to add to entries'''
         

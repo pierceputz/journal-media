@@ -1,5 +1,5 @@
 import unittest
-import zmedia
+from zmedia import Journal
 from pathlib import Path
 from calendar import monthrange
 import time
@@ -67,7 +67,7 @@ class TestJournalMediaClass(unittest.TestCase):
     def test_journal_class(self):
         #Test that we can retrieve journal entries
         #-Access headings & contents
-        pass
+        journal = Journal(JOURNALDIR)
     
 if __name__ == "__main__":
     unittest.main()

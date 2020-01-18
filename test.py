@@ -1,7 +1,8 @@
 import unittest
 import time
-from pathlib import Path
 from calendar import monthrange
+from datetime import date
+from pathlib import Path
 from zmedia import Journal
 
 #For journal entry creation
@@ -15,9 +16,10 @@ HEADER='''\
 ====== {month} {year} ======
 
 '''
-CONTENT='''\
+ENTRY_HEADER='''\
 ==== {year}/{month}/{day} ====
-
+'''
+ENTRY_CONTENT='''\
 Log:
     * Generic event
     * Generic event
@@ -28,6 +30,7 @@ Comments:
     * Generic Comment
 
 '''
+ENTRY = ENTRY_HEADER + ENTRY_CONTENT
 JOURNALDIR = './test-environment/Journal/'
 MINYEAR, MAXYEAR = 2013, 2021
 #---
@@ -51,7 +54,7 @@ class TestJournalMediaClass(unittest.TestCase):
                 
                 for day in range(1, monthrange(int(year), int(month))[1] + 1):
                     # Populate the entries by day
-                    entry += CONTENT.format(year=year, month=month, day=day)
+                    entry += ENTRY.format(year=year, month=month, day=day)
                 month_path.write_text(entry)
 
     @classmethod
@@ -77,11 +80,11 @@ class TestJournalMediaClass(unittest.TestCase):
         for log in journal.logs:
             self.assertEqual(METADATA, log.metadata)
             self.assertTrue(log.path.exists())
-        
-        #ensure each journal entry has: date, header, contents 
-        #TEST STILL IN PROGRESS
-        for entry in journal.entries:
-            self.assertNotEqual('', entry.contents)
+            self.assertNotEqual(log.entries, [])
+            #ensure each journal entry has: date, header, contents 
+            for entry in log.entries:
+                self.assertEqual(ENTRY_CONTENT, entry.contents)
+                self.assertTrue(type(entry.date) == type(date()))
     
     def test_media_referencing(self):
         '''Link media to journal entries by date'''

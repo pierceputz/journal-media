@@ -1,8 +1,8 @@
 import unittest
-from zmedia import Journal
+import time
 from pathlib import Path
 from calendar import monthrange
-import time
+from zmedia import Journal
 
 #For journal entry creation
 #---
@@ -56,7 +56,7 @@ class TestJournalMediaClass(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        '''Delete the actual files so we can rmdir recursively in reverse'''
+        '''Delete the actual files then rmdir recursively in reverse'''
         journal_dir = Path(JOURNALDIR)
         
         for year_dir in journal_dir.iterdir():
@@ -66,15 +66,24 @@ class TestJournalMediaClass(unittest.TestCase):
         journal_dir.rmdir()                #rmdir "Journal"
         Path(journal_dir.parent).rmdir()   #rmdir "test-environment"
 
-    def test_journal_class(self):
-        #Test that we can retrieve journal entries
-        #-Verify headings & contents
-        #Search a directory for media to add to entries
-        journal = Journal(JOURNALDIR)
+    def test_journal_init(self):
+        '''Test that we can create journals and retrieve their contents
+        -Verify headings & contents
+        -Add a heading for media links
+        Search a directory for media to add to entries'''
         
+        #load and verify journal contents
+        journal = Journal(JOURNALDIR)
+        for log in journal.logs:
+            self.assertEqual(METADATA, log.metadata)
+        
+        #ensure each journal entry has: date, header, contents 
+        #TEST STILL IN PROGRESS
         for entry in journal.entries:
-            self.assertEqual(METADATA, entry.metadata)
-            self.assertIsNotNone(entry.contents)
+            self.assertNotEqual('', entry.contents)
+    
+    def test_media_referencing(self):
+        pass
     
 if __name__ == "__main__":
     unittest.main()

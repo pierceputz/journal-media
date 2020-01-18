@@ -32,7 +32,7 @@ class TestJournalMediaClass(unittest.TestCase):
     def setUp(self):
         '''Set up the files we need for testing'''
         
-        for year in range(2018, 2021):
+        for year in range(2013, 2021):
             year = str(year)                # convert to str for .joinpath()
             year_dir = Path(TESTDIR + year)
             year_dir.mkdir(parents=True)
@@ -59,7 +59,9 @@ class TestJournalMediaClass(unittest.TestCase):
         journal_dir.rmdir()                #rmdir "Journal"
         Path(journal_dir.parent).rmdir()   #rmdir "test-environment"
 
-    def test_class_init(self):
+    def test_journal_class(self):
+        #Test that we can retrieve journal entries
+        #-Access headings & contents
         pass
 
     

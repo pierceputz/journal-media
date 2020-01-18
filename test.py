@@ -66,7 +66,7 @@ class TestJournalMediaClass(unittest.TestCase):
         journal_dir.rmdir()                #rmdir "Journal"
         Path(journal_dir.parent).rmdir()   #rmdir "test-environment"
 
-    def test_journal_init(self):
+    def test_journal_integrity(self):
         '''Test that we can create journals and retrieve their contents
         -Verify headings & contents
         -Add a heading for media links
@@ -83,7 +83,12 @@ class TestJournalMediaClass(unittest.TestCase):
             self.assertNotEqual('', entry.contents)
     
     def test_media_referencing(self):
-        pass
+        '''Link media to journal entries by date'''
+        
+        journal = Journal(JOURNAL_DIR)
+        
+        #journal.attachMedia(MEDIA_DIR)
+        
     
 if __name__ == "__main__":
     unittest.main()

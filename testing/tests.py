@@ -1,9 +1,11 @@
 import unittest
-import main as m
+from .. import main as m
 from pathlib import Path
 from calendar import monthrange
 import time
 
+#For journal entry creation
+#---
 HEADER='''\
 Content-Type: text/x-zim-wiki
 Wiki-Format: zim 0.4
@@ -25,16 +27,18 @@ Comments:
     * Generic Comment
 
 '''
-TESTDIR = './test-environment/Journal/'
+JOURNALDIR = './test-environment/Journal/'
+#---
 
 class TestJournalMediaClass(unittest.TestCase):
     
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         '''Set up the files we need for testing'''
         
         for year in range(2013, 2021):
             year = str(year)                # convert to str for .joinpath()
-            year_dir = Path(TESTDIR + year)
+            year_dir = Path(JOURNALDIR + year)
             year_dir.mkdir(parents=True)
             
             for month in range(1,13):
@@ -48,9 +52,10 @@ class TestJournalMediaClass(unittest.TestCase):
                     entry += CONTENT.format(year=year, month=month, day=day)
                 month_path.write_text(entry)
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
         '''Delete the actual files so we can rmdir recursively in reverse'''
-        journal_dir = Path(TESTDIR)
+        journal_dir = Path(JOURNALDIR)
         
         for year_dir in journal_dir.iterdir():
             for f in year_dir.iterdir():

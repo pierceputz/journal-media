@@ -6,11 +6,12 @@ import time
 
 #For journal entry creation
 #---
-HEADER='''\
+METADATA='''\
 Content-Type: text/x-zim-wiki
 Wiki-Format: zim 0.4
 Creation-Date: Not Relevant
-
+'''
+HEADER='''\
 ====== {month} {year} ======
 
 '''
@@ -28,6 +29,7 @@ Comments:
 
 '''
 JOURNALDIR = './test-environment/Journal/'
+MINYEAR, MAXYEAR = 2013, 2021
 #---
 
 class TestJournalMediaClass(unittest.TestCase):
@@ -36,7 +38,7 @@ class TestJournalMediaClass(unittest.TestCase):
     def setUpClass(cls):
         '''Set up the files we need for testing'''
         
-        for year in range(2013, 2021):
+        for year in range(MINYEAR, MAXYEAR):
             year = str(year)                # convert to str for .joinpath()
             year_dir = Path(JOURNALDIR + year)
             year_dir.mkdir(parents=True)
@@ -45,7 +47,7 @@ class TestJournalMediaClass(unittest.TestCase):
                 entry = ''                  # reset here or it accumulates
                 month = str(month)          # same deal as above
                 month_path = year_dir.joinpath(month + '.txt')
-                entry += HEADER.format(year=year, month=month)
+                entry += METADATA + HEADER.format(year=year, month=month)
                 
                 for day in range(1, monthrange(int(year), int(month))[1] + 1):
                     # Populate the entries by day
@@ -66,8 +68,13 @@ class TestJournalMediaClass(unittest.TestCase):
 
     def test_journal_class(self):
         #Test that we can retrieve journal entries
-        #-Access headings & contents
+        #-Verify headings & contents
+        #Search a directory for media to add to entries
         journal = Journal(JOURNALDIR)
+        
+        for entry in journal.entries:
+            self.assertEqual(METADATA, entry.metadata)
+            self.assertIsNotNone(entry.contents)
     
 if __name__ == "__main__":
     unittest.main()

@@ -6,9 +6,13 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
+#work in progress, might be worthless
+re_entry = re.compile(r"={2,6} \d+.\d+.\d+ ={2,6}\nLog:[\w:* \t\n]*")
+
 # easier to roll my own here than import from zim.formats.wiki
 def is_heading(header):
     '''Parse heading and determine it's level'''
+    
     try:
         assert header.startswith('=')
         assert header.endswith('\n')
@@ -18,6 +22,7 @@ def is_heading(header):
     contents = header.split(' ')
     if contents[0] != contents[2].strip():
         return False
+    
     return True
 
 class Journal():
@@ -25,10 +30,10 @@ class Journal():
     
     def __init__(self, path):
         '''store path and recurse for entries if applicable'''
+        
         logging.debug('creating Journal() for %s', path)
         self.path = Path(path)
-        self.logs = [ Log(child) for child in 
-                      self.path.rglob('*.txt') ]
+        self.logs = [ Log(child) for child in self.path.rglob('*.txt') ]
 
 class Log():
     '''a zim-wiki journal log (considered a collection of entries)'''
@@ -39,41 +44,29 @@ class Log():
         self.path = Path(path)
         self.metadata, self.header = str(), str()
         self.entries= []
-        startparsing = False
-        entry = str()
+        log = str()
         
         with open(path, 'r') as f:
             for n, line in enumerate(f):
                 if n < 3: 
                     self.metadata += line
                     continue
-                #Rewrite entirely. I think it get confused and turns off 
-                #the parser because the first heading is the log heading
-                #not an entry heading
-                #Should probably use regex
-                if is_heading(line) and startparsing != True:
-                    logging.debug('Entry parsing started for %s', line)
-                    self.header = 
-                    startparsing == True
-                    entry += line
-                elif is_heading(line) == False and startparsing == True:
-                    entry += line
-                    logging.debug(entry)
-                elif is_heading(line) and startparsing == True:
-                    logging.debug('Entry ready to be created: %s', entry)
-                    self.entries.append(Entry(entry))
-                    startparsing, entry = False, ''
-            #else:                                       # capture last entry
-            #    if startparsing == True:
-            #        self.entries.append(Entry(entry))
+                log += line
+
+        for entry in re_entry.findall(log):
+                self.entries.append(Entry(entry))
 
 class Entry():
     '''an entry created from a log file'''
     
     def __init__(self, entry):
         self.header = entry.split('\n')[0]
-        self.contents = entry.replace(self.header, '')
-        self.date = date(*parse_date(self.header))
+        self.contents = entry.replace(self.header+'\n', '')
+        #parsedate accepts YYYY MM without DD, avoid errors
+        try:
+            self.date = date(*parse_date(self.header))
+        except ValueError as e:
+            logging.warning('Skipping ValueError for date: %s', e)
     
     def addMediaReference(self, link):
         pass

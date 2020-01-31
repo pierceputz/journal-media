@@ -84,7 +84,7 @@ class TestJournalMediaClass(unittest.TestCase):
             #ensure each journal entry has: date, header, contents 
             for entry in log.entries:
                 self.assertEqual(ENTRY_CONTENT, entry.contents)
-                self.assertTrue(type(entry.date) == type(date()))
+                self.assertTrue(type(entry.date) == type(date(2020,1,1)))
     
     def test_media_referencing(self):
         '''Link media to journal entries by date'''
